@@ -1,0 +1,21 @@
+rootProject.name = 'student-dojo'
+[
+        'workshop',
+        'labs/01-legacy-code',
+        'labs/02-homework',
+        'labs/02-homework/stubs/emailservice',
+        'labs/02-homework/stubs/productservice',
+        'labs/02-homework/stubs/customerservice',
+].each { projectPath ->
+    def projectName = "${projectPath.split('/').last()}"
+    include projectName
+    def project = project(":${projectName}")
+    project.projectDir = new File(projectPath)
+    project.buildFileName = "${projectName}.gradle"
+    project.name = "${rootProject.name}-${project.name}"
+    if (!project.buildFile.isFile()) {
+        project.buildFileName = 'build.gradle'
+    }
+    assert project.projectDir.isDirectory()
+    assert project.buildFile.isFile()
+}
